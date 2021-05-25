@@ -263,14 +263,15 @@ List* check_name_coords(Graph* graph, char* name, int keys[]) {
 }
 
 Node* DFS(Graph* graph, char* name, char* find) {
-    Mass *mass = NULL;
     List *list = NULL;
     Item *ptr = NULL;
+    Mass *mass = NULL;
     int k;
     mass = new_mass_for_DFS(mass, graph->count);
     mass = add_mass(mass, name);
     for (int i = 0; i < mass->max; i++){
         if (mass->item[i].name == NULL){
+            delete_mass(mass);
             return NULL;
         }
         if (mass->item[i].color == 0){
@@ -281,6 +282,7 @@ Node* DFS(Graph* graph, char* name, char* find) {
                 k = find_in_mass(mass, ptr->node->name);
                 if (k == -1){
                     if (strcmp(find, ptr->node->name) == 0){
+                        delete_mass(mass);
                         return ptr->node;
                     }
                     mass = add_mass(mass, ptr->node->name);
@@ -289,6 +291,7 @@ Node* DFS(Graph* graph, char* name, char* find) {
             }
         }
     }
+    delete_mass(mass);
     return NULL;
 }
 
